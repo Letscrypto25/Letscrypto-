@@ -1,16 +1,23 @@
+# firebase_setup.py
 import os
 import json
+from cryptography.fernet import Fernet
 from firebase_admin import credentials, initialize_app, db
 
-# Load the raw JSON from env (not base64 encoded)
-firebase_creds_str = os.getenv("FIREBASE_CREDENTIALS")
+def initialize_firebase():
+    encrypted = os.getenv("FIREBASE_ENCRYPTED")
+    secret_key = os.getenv("FIREBASE_SECRET_KEY")
 
-if not firebase_creds_str:
-    raise Exception("FIREBASE_CREDENTIALS env var not found")
+    if not encrypted or not secret_key:
+        raise Exception("Missing Firebase secrets.")
 
-# Parse string into JSON dict
-firebase_creds_dict = json.loads(firebase_creds_str)
+    # Decrypt the credentials
+    fernet = Fernet(secret_key.encode())
+    decrypted_bytes = fernet.decrypt(encrypted.encode())
 
-# Initialize Firebase with dict (no file written)
-cred = credentials.Certificate(firebase_creds_dict)
-initialize_app(cred, {'databaseURL': 'https://your-firebase-db.firebaseio.com'})
+    # Load JSON and init Firebase
+    creds_dict = json.loads(decrypted_bytes.decode())
+    cred = credentials.Certificate(creds_dict)
+    initialize_app(cred, {
+        'databaseURL': 'https://your-firebase-db.firebaseio.com'  # Replace with your actual DB URL
+    })
