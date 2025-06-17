@@ -19,5 +19,5 @@ def initialize_firebase():
     creds_dict = json.loads(decrypted_bytes.decode())
     cred = credentials.Certificate(creds_dict)
     initialize_app(cred, {
-        'databaseURL': 'https://your-firebase-db.firebaseio.com'  # Replace with your actual DB URL
+        'databaseURL': 'https://console.firebase.google.com/u/0/project/crypto-bot-3/database/crypto-bot-3-default-rtdb/data/~2F'  # URL
     })
