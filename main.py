@@ -15,7 +15,7 @@ APP_URL = os.getenv("APP_URL")
 
 app = Flask(__name__)
 bot = Bot(token=BOT_TOKEN)
-dispatcher = Dispatcher(bot, None, workers=0, use_context=True)
+dispatcher = Dispatcher(bot, None, workers=1, use_context=True)
 
 # === Register Command Handlers ===
 dispatcher.add_handler(CommandHandler("start", start))
