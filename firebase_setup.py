@@ -4,7 +4,7 @@ from firebase_admin import credentials, initialize_app
 from cryptography.fernet import Fernet
 
 # === 1. Get encrypted string and key from secrets ===
-encrypted_str = os.getenv("FIREBASE_CREDENTIALS")
+encrypted_str = os.getenv("FIREBASE_CREDENTIALS_ENCRYPTED")
 fernet_key = os.getenv("SECRET_KEY")
 
 if not encrypted_str or not fernet_key:
