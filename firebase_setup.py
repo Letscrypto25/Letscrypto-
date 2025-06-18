@@ -6,7 +6,7 @@ from firebase_admin import credentials, initialize_app, db
 
 def initialize_firebase():
     encrypted = os.getenv("FIREBASE_ENCRYPTED")
-    secret_key = os.getenv("FIREBASE_SECRET_KEY")
+    secret_key = os.getenv("SECRET_KEY")
 
     if not encrypted or not secret_key:
         raise Exception("Missing Firebase secrets.")
