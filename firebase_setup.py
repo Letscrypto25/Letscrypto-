@@ -20,5 +20,5 @@ firebase_creds = json.loads(decrypted_json)
 # === 4. Initialize Firebase ===
 initialize_app(
     credentials.Certificate(firebase_creds),
-    {"databaseURL": "https://console.firebase.google.com/u/0/project/crypto-bot-3/database/crypto-bot-3-default-rtdb/data/~2F"}
+    {"databaseURL": "https://crypto-bot-3-default-rtdb.firebaseio.com/users/7521070576"}
 )
