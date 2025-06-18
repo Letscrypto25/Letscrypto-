@@ -1,0 +1,19 @@
+# Ignore secrets and credentials
+firebase_key.json
+firebase_key_encrypted.txt
+firebase_key_encoded.txt
+
+# Python bytecode/cache
+__pycache__/
+*.pyc
+
+# Environment files
+.env
+
+# Virtualenv folder (if used)
+venv/
+env/
+
+# System files
+.DS_Store
+*.swp
