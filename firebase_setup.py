@@ -1,21 +1,19 @@
 import os
 import json
+import base64
 from firebase_admin import credentials, initialize_app
-from cryptography.fernet import Fernet
 
-# === 1. Get encrypted string and key from secrets ===
-encrypted_str = os.getenv("FIREBASE_CREDENTIALS_ENCRYPTED")
-fernet_key = os.getenv("SECRET_KEY")
+# === 1. Get base64-encoded string from secrets ===
+encoded_str = os.getenv("FIREBASE_CREDENTIALS_ENCRYPTED")
 
-if not encrypted_str or not fernet_key:
-    raise Exception("Missing secrets")
+if not encoded_str:
+    raise Exception("Missing FIREBASE_CREDENTIALS_ENCRYPTED secret")
 
-# === 2. Decrypt ===
-fernet = Fernet(fernet_key.encode())
-decrypted_json = fernet.decrypt(encrypted_str.encode()).decode()
+# === 2. Decode from base64 ===
+decoded_json = base64.b64decode(encoded_str).decode()
 
-# === 3. Convert decrypted string into a dict ===
-firebase_creds = json.loads(decrypted_json)
+# === 3. Convert JSON string into dict ===
+firebase_creds = json.loads(decoded_json)
 
 # === 4. Initialize Firebase ===
 initialize_app(
