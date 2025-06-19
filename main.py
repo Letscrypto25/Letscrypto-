@@ -1,4 +1,5 @@
 import os
+import threading
 import requests
 from flask import Flask, request
 from telegram import Bot, Update
@@ -22,19 +23,23 @@ dispatcher.add_handler(CommandHandler("start", start))
 dispatcher.add_handler(CommandHandler("balance", balance))
 dispatcher.add_handler(CommandHandler("buy_lc", buy_lc))
 
-# === Webhook ===
+# === Webhook Endpoint ===
 @app.route("/webhook", methods=["POST"])
 def webhook():
     update = Update.de_json(request.get_json(force=True), bot)
     dispatcher.process_update(update)
     return "ok"
 
+# === Endpoint to set Telegram webhook ===
 @app.route("/", methods=["GET"])
 def set_webhook():
     r = requests.get(f"https://api.telegram.org/bot{BOT_TOKEN}/setWebhook?url={APP_URL}/webhook")
     return r.text
 
-# === Start Bot ===
 if __name__ == "__main__":
-    start_daily_loop()
+    # Run your long-running task in background thread
+    thread = threading.Thread(target=start_daily_loop, daemon=True)
+    thread.start()
+
+    # Start Flask server
     app.run(host="0.0.0.0", port=8080)
